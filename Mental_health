@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mental Health & Well-Being Platform</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        header {
+            background-color: #4a90e2;
+            color: white;
+            padding: 1.2rem 2rem;
+            text-align: center;
+        }
+        nav {
+            background: #357abd;
+            color: white;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 1rem 0;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        main {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        section {
+            margin-bottom: 3rem;
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 8px #cce4ff;
+        }
+        h2 {
+            color: #2e5a9f;
+            margin-bottom: 1rem;
+        }
+        ul.resources {
+            list-style-position: inside;
+            padding-left: 0;
+        }
+        ul.resources li {
+            margin-bottom: 0.7rem;
+        }
+        footer {
+            background-color: #4a90e2;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+        .breathing-timer {
+            text-align: center;
+        }
+        #timerDisplay {
+            font-size: 2rem;
+            margin: 1rem 0;
+            color: #4a90e2;
+        }
+        button {
+            background-color: #4a90e2;
+            border: none;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+        button:hover {
+            background-color: #366bb3;
+        }
+        form label {
+            display: block;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+        form input[type="text"], form textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin-top: 0.4rem;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        form button.submit-btn {
+            margin-top: 1.5rem;
+        }
+        .message {
+            color: green;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Your Mental Health & Well-Being Support</h1>
+        <p>Your safe space for emotional support and stress management</p>
+    </header>
+    <nav>
+        <a href="#support">Emotional Support</a>
+        <a href="#tools">Stress Management</a>
+        <a href="#resources">Resources</a>
+        <a href="#contact">Contact</a>
+    </nav>
+    <main>
+        <section id="support">
+            <h2>Emotional Support</h2>
+            <p>
+                Remember, you're not alone. It’s okay to reach out and express how you feel. Sometimes, a few words of encouragement or a short break can make a big difference.
+            </p>
+            <blockquote style="font-style: italic; color: #666;">
+                "It's OK to not be OK. Your feelings are valid." — Mental Health Matters
+            </blockquote>
+        </section>
+
+        <section id="tools">
+            <h2>Stress Management Tool: Breathing Exercise</h2>
+            <p>Use this simple breathing exercise to calm your mind. Follow the guided timer:</p>
+            <div class="breathing-timer">
+                <div id="timerDisplay">Ready?</div>
+                <button id="startBtn">Start Breathing Exercise</button>
+            </div>
+        </section>
+
+        <section id="resources">
+            <h2>Mental Health Resources</h2>
+            <ul class="resources">
+                <li><a href="https://www.mentalhealth.gov" target="_blank" rel="noopener">MentalHealth.gov</a> - Trusted information and resources</li>
+                <li><a href="https://www.nami.org" target="_blank" rel="noopener">National Alliance on Mental Illness (NAMI)</a> - Support and education</li>
+                <li><a href="https://www.samhsa.gov" target="_blank" rel="noopener">Substance Abuse and Mental Health Services Administration (SAMHSA)</a> - Help and treatment facilities</li>
+                <li><a href="https://www.cdc.gov/mentalhealth" target="_blank" rel="noopener">CDC Mental Health</a> - Data and strategies for well-being</li>
+            </ul>
+        </section>
+
+        <section id="contact">
+            <h2>Contact for Support</h2>
+            <p>If you need someone to talk to, fill out this form anonymously and we will get back to you.</p>
+            <form id="supportForm">
+                <label for="topic">Topic (optional):</label>
+                <input type="text" id="topic" name="topic" placeholder="Stress, anxiety, study pressure..." />
+                
+                <label for="message">Your Message:</label>
+                <textarea id="message" name="message" rows="5" required placeholder="Type your message here..."></textarea>
+
+                <button type="submit" class="submit-btn">Send</button>
+                <div class="message" id="formMessage"></div>
+            </form>
+        </section>
+    </main>
+    <footer>
+        &copy; 2025 Mental Health & Well-Being Support Platform
+    </footer>
+
+    <script>
+        // Breathing timer logic: 4 sec inhale, 7 sec hold, 8 sec exhale — repeat 3 cycles
+        const startBtn = document.getElementById('startBtn');
+        const timerDisplay = document.getElementById('timerDisplay');
+        let timerIntervals;
+
+        const breathingPhases = [
+            {text: 'Inhale', duration: 4000},
+            {text: 'Hold', duration: 7000},
+            {text: 'Exhale', duration: 8000}
+        ];
+
+        function startBreathingCycle(cycles=3){
+            let cycleCount = 0;
+            let phaseIndex = 0;
+
+            function nextPhase(){
+                if(cycleCount >= cycles){
+                    timerDisplay.textContent = 'Well done! You completed the exercise.';
+                    startBtn.disabled = false;
+                    return;
+                }
+                let phase = breathingPhases[phaseIndex];
+                timerDisplay.textContent = phase.text;
+                
+                setTimeout(() => {
+                    phaseIndex++;
+                    if(phaseIndex >= breathingPhases.length){
+                        phaseIndex = 0;
+                        cycleCount++;
+                    }
+                    nextPhase();
+                }, phase.duration);
+            }
+
+            startBtn.disabled = true;
+            nextPhase();
+        }
+
+        startBtn.addEventListener('click', () => {
+            startBreathingCycle();
+        });
+
+        // Contact form handling - to simulate submission and confirmation
+        const supportForm = document.getElementById('supportForm');
+        const formMessage = document.getElementById('formMessage');
+
+        supportForm.addEventListener('submit', function(event){
+            event.preventDefault();
+            // In real app, here you would send data to a backend server 
+            formMessage.style.color = 'green';
+            formMessage.textContent = 'Thank you for reaching out. We will respond as soon as possible.';
+            supportForm.reset();
+        });
+    </script>
+</body>
+</html>
